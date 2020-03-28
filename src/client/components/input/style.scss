@@ -1,0 +1,11 @@
+.input-container {
+	line-height: 2rem;
+
+	input[type=button],
+	input[type=text] {
+		box-sizing: border-box;
+		height: 2rem;
+		padding: 4px;
+		width: 100%;
+	}
+}

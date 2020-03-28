@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"baseUrl": "src",
+		"jsx": "react",
+		"module": "CommonJS",
+		"outDir": "lib",
+		"paths": {
+			"client": ["client"],
+			"models": ["models"],
+			"http-server": ["http-server"],
+			"ws-server": ["ws-server"]
+		},
+		"sourceMap": true,
+		"strict": true,
+		"target": "ES6"
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"include": [
+		"src/**/*"
+	]
+}

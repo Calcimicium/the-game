@@ -1,0 +1,15 @@
+.games-page {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	left: 0;
+	padding: 5%;
+	position: absolute;
+	top: 0;
+	width: 100%;
+
+	.games-container {
+		flex: 1 1 100%;
+	}
+}
