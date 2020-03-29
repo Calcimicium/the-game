@@ -1,17 +1,26 @@
 import Player from "./player"
-import { BaseModel } from "./base-model"
+import BaseModel from "./base-model"
 
-export default class Game extends BaseModel<number> {
+export default class Game extends BaseModel {
 	constructor() {
 		super()
+		this._maxPlayers = 0
 		this._players = []
+	}
+
+	get maxPlayers(): number {
+		return this._maxPlayers
+	}
+
+	set maxPlayers(value: number) {
+		this._maxPlayers = value
 	}
 
 	get players(): Player[] {
 		return this._players
 	}
 
-	addPlayer(player: Player[]): this {
+	addPlayer(player: Player): this {
 		this._players.push(player)
 		return this
 	}
@@ -24,5 +33,6 @@ export default class Game extends BaseModel<number> {
 		return this
 	}
 
+	private _maxPlayers: number
 	private _players: Player[]
 }

@@ -1,15 +1,11 @@
-export abstract class BaseModel<TKey> implements Model<TKey> {
-	get id(): TKey | null {
+export default abstract class BaseModel {
+	get id(): number {
 		return this._id
 	}
 
-	set id(value: TKey | null) {
+	set id(value: number) {
 		this._id = value
 	}
 
-	private _id: TKey | null = null
-}
-
-export interface Model<TKey> {
-	id: TKey | null
+	private _id: number = 0
 }

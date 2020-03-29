@@ -1,12 +1,12 @@
-import BaseService from "server/services/base-service"
+import BaseDao from "./base-dao"
+import client from "./client"
 import Player from "models/player"
-import { PlayerDao, playerDao } from "server/dao/player-dao"
 
-export class PlayerService extends BaseService<Player, PlayerDao> {
+export class PlayerDao extends BaseDao<Player> {
 	create(model: Player): Promise<void> {
 		throw new Error("Method not implemented.")
 	}
-	delete(model: Player): Promise<void> {
+	delete(id: number): Promise<void> {
 		throw new Error("Method not implemented.")
 	}
 	findById(id: number): Promise<Player | null> {
@@ -15,10 +15,9 @@ export class PlayerService extends BaseService<Player, PlayerDao> {
 	find(limit?: number, offset?: number): Promise<Player[]> {
 		throw new Error("Method not implemented.")
 	}
-	update(model: Player): Promise<void> {
+	update(id: number): Promise<void> {
 		throw new Error("Method not implemented.")
 	}
-
 }
 
-export const playerService = new PlayerService(playerDao)
+export const playerDao = new PlayerDao(client)

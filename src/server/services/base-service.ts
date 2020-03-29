@@ -1,10 +1,9 @@
-import BaseDao from "../dao/base-dao"
-import { BaseModel } from "../../models/base-model"
+import BaseDao from "server/dao/base-dao"
+import BaseModel from "models/base-model"
 
 export default abstract class BaseService<
-	TModel extends BaseModel<TKey>,
-	TKey,
-	TDao extends BaseDao<TModel, TKey>
+	TModel extends BaseModel,
+	TDao extends BaseDao<TModel>
 > {
 	constructor(dao: TDao) {
 		this._dao = dao
@@ -24,7 +23,7 @@ export default abstract class BaseService<
 
 	abstract async create(model: TModel): Promise<void>
 	abstract async delete(model: TModel): Promise<void>
-	abstract async findById(id: TKey): Promise<TModel | null>
+	abstract async findById(id: TModel["id"]): Promise<TModel | null>
 	abstract async find(limit?: number, offset?: number): Promise<TModel[]>
 	abstract async update(model: TModel): Promise<void>
 

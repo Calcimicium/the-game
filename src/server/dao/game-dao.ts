@@ -2,7 +2,7 @@ import BaseDao from "./base-dao"
 import client from "./client"
 import Game from "../../models/game"
 
-export class GameDao extends BaseDao<Game, number> {
+export class GameDao extends BaseDao<Game> {
 	async create(model: Game): Promise<void> {
 		throw new Error("Method not implemented.")
 	}
@@ -24,7 +24,6 @@ export class GameDao extends BaseDao<Game, number> {
 	async update(id: number): Promise<void> {
 		throw new Error("Method not implemented.")
 	}
-
 }
 
 export const gameDao = new GameDao(client)

@@ -3,6 +3,7 @@ import * as fs from "fs"
 import * as path from "path"
 import * as WebSocket from "ws"
 import { DEFAULT_PORT, Env, getWsAddress, ENV_TEMPLATE } from "env"
+import handleMessage from "./handlers/message-handler"
 
 const clientDir = path.resolve(__dirname, "../client")
 const indexFile = path.join(clientDir, "index.html")
@@ -26,10 +27,41 @@ const server = express()
 const wss = new WebSocket.Server({ server })
 
 wss.on("connection", ws => {
-	console.log("Client connected", ws)
-	ws.on("close", () => console.log("Client disconnected", ws))
+	console.log("New client connected")
+
+	wss.clients.forEach(c => {
+		if (c === ws || c.readyState !== WebSocket.OPEN) return
+
+		c.send(JSON.stringify(new Message("lorem", "hello world")))
+	})
+
+	ws.on("message", handleMessage)
+
+	ws.on("close", () => console.log("Client disconnected"))
 })
+
+setInterval(() => {
+	wss.clients.forEach(c => c.send(new Date().toString()))
+}, 1000)
 
 function isSecured(req: express.Request): boolean {
 	return req.protocol === "https"
+}
+
+class Message<TBody> {
+	constructor(id: string, body: TBody) {
+		this._id = id
+		this._body = body
+	}
+
+	get body(): TBody {
+		return this._body
+	}
+
+	get id(): string {
+		return this._id
+	}
+
+	private _body: TBody
+	private _id: string
 }

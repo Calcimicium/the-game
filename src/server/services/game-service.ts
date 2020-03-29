@@ -2,7 +2,7 @@ import BaseService from "./base-service"
 import Game from "../../models/game"
 import { gameDao, GameDao } from "../dao/game-dao"
 
-export class GameService extends BaseService<Game, number, GameDao> {
+export class GameService extends BaseService<Game, GameDao> {
 	async find(limit?: number, offset?: number): Promise<Game[]> {
 		return [
 			new Game(),
