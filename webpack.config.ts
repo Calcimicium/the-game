@@ -26,6 +26,7 @@ const baseModule: webpack.Module = {
 const resolve: webpack.Resolve = {
 	alias: {
 		"client": path.join(srcDir, "client"),
+		"env": path.join(srcDir, "env.ts"),
 		"server": path.join(srcDir, "server"),
 		"models": path.join(srcDir, "models"),
 		"pg-native": path.join(__dirname, "aliases/pg-native.js"),

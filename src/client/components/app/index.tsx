@@ -2,15 +2,15 @@ import * as React from "react"
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
 import Games from "client/components/games"
 import SignIn from "client/components/sign-in"
-import Env from "client/env"
+import { Env, DEFAULT_HOST, DEFAULT_PORT } from "env"
 
 declare const __env__: Env
 
 export class App extends React.Component<Props> {
 	constructor(props: Readonly<Props>) {
 		super(props)
-		const host = __env__.WS_HOST || "localhost"
-		const port = __env__.WS_PORT || 3000
+		const host = __env__.HOST || DEFAULT_HOST
+		const port = __env__.PORT || DEFAULT_PORT
 		const address = `ws://${host}:${port}`
 
 		this.webSocket = new WebSocket(address)
