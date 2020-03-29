@@ -23,7 +23,6 @@ const baseModule: webpack.Module = {
 		}
 	]
 }
-const publicPath = "/assets/"
 const resolve: webpack.Resolve = {
 	alias: {
 		"client": path.join(srcDir, "client"),
@@ -46,7 +45,6 @@ const clientConfig: webpack.Configuration = {
 		contentBase: distClientDir,
 		historyApiFallback: true,
 		port: process.env.PORT ? parseInt(process.env.PORT) : undefined,
-		publicPath: path.join(publicPath, "js/"),
 		watchContentBase: true
 	},
 	devtool,
@@ -56,7 +54,6 @@ const clientConfig: webpack.Configuration = {
 	output: {
 		filename: "js/index.js",
 		path: distClientDir,
-		publicPath,
 		libraryTarget: "umd"
 	},
 	plugins: [
