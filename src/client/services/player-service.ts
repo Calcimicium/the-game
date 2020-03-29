@@ -1,5 +1,5 @@
 import webSocket from "client/websocket"
-import Player from "models/Player"
+import Player from "models/player"
 import { BaseService } from "./base-service"
 
 export class PlayerService extends BaseService<Player> {

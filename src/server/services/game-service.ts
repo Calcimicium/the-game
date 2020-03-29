@@ -1,5 +1,5 @@
 import BaseService from "./base-service"
-import Game from "../../models/Game"
+import Game from "../../models/game"
 import { gameDao, GameDao } from "../dao/game-dao"
 
 export class GameService extends BaseService<Game, number, GameDao> {

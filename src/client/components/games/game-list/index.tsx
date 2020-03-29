@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router-dom"
 import Input from "client/components/input"
 import { gameService } from "client/services/game-service"
 import websocket from "client/websocket"
-import Game from "models/Game"
+import Game from "models/game"
 
 import "./style.scss"
 

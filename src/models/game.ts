@@ -1,4 +1,4 @@
-import Player from "./Player"
+import Player from "./player"
 import { BaseModel } from "./base-model"
 
 export default class Game extends BaseModel<number> {

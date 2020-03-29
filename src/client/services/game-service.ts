@@ -1,6 +1,6 @@
 import { BaseService } from "client/services/base-service"
 import webSocket from "client/websocket"
-import Game from "models/Game"
+import Game from "models/game"
 
 export class GameService extends BaseService<Game> {
 	get(): void {
