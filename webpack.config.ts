@@ -73,7 +73,7 @@ const clientConfig: webpack.Configuration = {
 			xhtml: true
 		}),
 		new HtmlWebpackHarddiskPlugin(),
-		new MiniCssExtractPlugin()
+		new MiniCssExtractPlugin({ filename: "css/[name].css" })
 	],
 	resolve
 }
