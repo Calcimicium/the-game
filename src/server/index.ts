@@ -13,7 +13,7 @@ const server = express()
 .use("/css", express.static(path.join(clientDir, "css")))
 .use("/js", express.static(path.join(clientDir, "js")))
 .get("/*", (req, res, next) => {
-	const wsAddress = getWsAddress(req.hostname, port)
+	const wsAddress = getWsAddress(req.hostname, port, isSecured(req))
 	const env: Env = { wsAddress }
 	res.send(indexContent.replace(ENV_TEMPLATE, JSON.stringify(env)))
 })
@@ -27,3 +27,7 @@ wss.on("connection", ws => {
 	console.log("Client connected", ws)
 	ws.on("close", () => console.log("Client disconnected", ws))
 })
+
+function isSecured(req: express.Request): boolean {
+	return req.protocol === "https"
+}
