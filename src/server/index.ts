@@ -10,6 +10,7 @@ const indexContent = fs.readFileSync(indexFile, "utf8")
 const port = process.env.PORT || DEFAULT_PORT
 
 const server = express()
+.set("trust proxy", true)
 .use("/css", express.static(path.join(clientDir, "css")))
 .use("/js", express.static(path.join(clientDir, "js")))
 .get("/*", (req, res, next) => {
