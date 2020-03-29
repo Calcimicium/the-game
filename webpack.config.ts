@@ -4,7 +4,7 @@ import * as HtmlWebpackHarddiskPlugin from "html-webpack-harddisk-plugin"
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin"
 import * as path from "path"
 import * as webpack from "webpack"
-import * as serialize from "serialize-javascript"
+import { getWsAddress, ENV_TEMPLATE, Env } from "./src/env"
 
 Dotenv.config()
 
@@ -40,6 +40,11 @@ clientModule.rules.push({
 	test: /\.(css|sass|scss)$/
 })
 
+const __env__: Env = { wsAddress: getWsAddress(process.env.HOST, process.env.PORT) }
+const templateParameters = mode === "development"
+? { __env__: JSON.stringify(__env__) }
+: { __env__: ENV_TEMPLATE }
+
 const clientConfig: webpack.Configuration = {
 	context: srcDir,
 	devServer: {
@@ -62,12 +67,7 @@ const clientConfig: webpack.Configuration = {
 			alwaysWriteToDisk: true,
 			inject: "head",
 			template: path.join(srcDir, "client", "static", "index.ejs"),
-			templateParameters: {
-				__env__: serialize({
-					HOST: process.env.HOST,
-					PORT: process.env.PORT
-				})
-			},
+			templateParameters,
 			xhtml: true
 		}),
 		new HtmlWebpackHarddiskPlugin(),

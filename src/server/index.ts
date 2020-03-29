@@ -1,21 +1,23 @@
 import * as express from "express"
+import * as fs from "fs"
 import * as path from "path"
 import * as WebSocket from "ws"
-import { DEFAULT_PORT } from "env"
+import { DEFAULT_PORT, Env, getWsAddress, ENV_TEMPLATE } from "env"
 
-const PORT = process.env.PORT || DEFAULT_PORT
 const clientDir = path.resolve(__dirname, "../client")
-
-console.log("__dirname", __dirname)
-console.log("clientDir", clientDir)
+const indexFile = path.join(clientDir, "index.html")
+const indexContent = fs.readFileSync(indexFile, "utf8")
+const port = process.env.PORT || DEFAULT_PORT
 
 const server = express()
 .use("/", express.static(clientDir))
 .get("/*", (req, res, next) => {
-	res.sendFile(path.join(clientDir, "index.html"))
+	const wsAddress = getWsAddress(req.hostname, port)
+	const env: Env = { wsAddress }
+	res.send(indexContent.replace(ENV_TEMPLATE, JSON.stringify(env)))
 })
-.listen(PORT, () => {
-	console.log("Listening on port", PORT)
+.listen(port, () => {
+	console.log("Listening on port", port)
 })
 
 const wss = new WebSocket.Server({ server })
