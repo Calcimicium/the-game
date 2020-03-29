@@ -8,13 +8,14 @@ const clientDir = path.resolve(__dirname, "../client")
 const indexFile = path.join(clientDir, "index.html")
 const indexContent = fs.readFileSync(indexFile, "utf8")
 const port = process.env.PORT || DEFAULT_PORT
+const clientPort = process.env.NODE_ENV !== "production" ? port : undefined
 
 const server = express()
 .set("trust proxy", true)
 .use("/css", express.static(path.join(clientDir, "css")))
 .use("/js", express.static(path.join(clientDir, "js")))
 .get("/*", (req, res, next) => {
-	const wsAddress = getWsAddress(req.hostname, port, isSecured(req))
+	const wsAddress = getWsAddress(req.hostname, clientPort, isSecured(req))
 	const env: Env = { wsAddress }
 	res.send(indexContent.replace(ENV_TEMPLATE, JSON.stringify(env)))
 })
