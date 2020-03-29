@@ -1,11 +1,8 @@
 import * as express from "express"
-import * as path from "path"
 import * as WebSocket from "ws"
 
-const clientDir = path.resolve(__dirname, "../client")
-
 const server = express()
-.use("/", express.static(clientDir))
+.use("/", express.static("../client"))
 .listen(process.env.PORT, () => {
 	console.log("Listening on port", process.env.PORT)
 })
