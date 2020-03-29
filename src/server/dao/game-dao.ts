@@ -1,5 +1,5 @@
 import BaseDao from "./base-dao"
-import client from "../client"
+import client from "./client"
 import Game from "../../models/Game"
 
 export class GameDao extends BaseDao<Game, number> {

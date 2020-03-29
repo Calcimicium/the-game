@@ -7,8 +7,7 @@
 		"paths": {
 			"client": ["client"],
 			"models": ["models"],
-			"http-server": ["http-server"],
-			"ws-server": ["ws-server"]
+			"server": ["server"]
 		},
 		"sourceMap": true,
 		"strict": true,

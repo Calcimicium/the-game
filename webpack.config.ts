@@ -27,10 +27,9 @@ const publicPath = "/assets/"
 const resolve: webpack.Resolve = {
 	alias: {
 		"client": path.join(srcDir, "client"),
-		"http-server": path.join(srcDir, "http-server"),
+		"server": path.join(srcDir, "server"),
 		"models": path.join(srcDir, "models"),
 		"pg-native": path.join(__dirname, "aliases/pg-native.js"),
-		"ws-server": path.join(srcDir, "ws-server")
 	},
 	extensions: [".js", ".jsx", ".ts", ".tsx"]
 }
@@ -82,27 +81,12 @@ const clientConfig: webpack.Configuration = {
 const clientServerConfig: webpack.Configuration = {
 	context: srcDir,
 	devtool,
-	entry: "./http-server/index.ts",
+	entry: "./server/index.ts",
 	module: baseModule,
 	mode,
 	output: {
 		filename: "index.js",
-		path: path.join(distDir, "http-server"),
-		libraryTarget: "commonjs2"
-	},
-	resolve,
-	target: "node"
-}
-
-const wsServerConfig: webpack.Configuration = {
-	context: srcDir,
-	devtool,
-	entry: "./ws-server/index.ts",
-	mode,
-	module: baseModule,
-	output: {
-		filename: "index.js",
-		path: path.join(distDir, "ws-server"),
+		path: path.join(distDir, "server"),
 		libraryTarget: "commonjs2"
 	},
 	resolve,
@@ -111,6 +95,5 @@ const wsServerConfig: webpack.Configuration = {
 
 export default [
 	clientConfig,
-	clientServerConfig,
-	wsServerConfig
+	clientServerConfig
 ]

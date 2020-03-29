@@ -10,7 +10,7 @@ export class App extends React.Component<Props> {
 	constructor(props: Readonly<Props>) {
 		super(props)
 		const host = __env__.WS_HOST || "localhost"
-		const port = __env__.WS_PORT || 8888
+		const port = __env__.WS_PORT || 3000
 		const address = `ws://${host}:${port}`
 
 		this.webSocket = new WebSocket(address)
