@@ -10,7 +10,8 @@ const indexContent = fs.readFileSync(indexFile, "utf8")
 const port = process.env.PORT || DEFAULT_PORT
 
 const server = express()
-.use("/", express.static(clientDir))
+.use("/css", express.static(path.join(clientDir, "css")))
+.use("/js", express.static(path.join(clientDir, "js")))
 .get("/*", (req, res, next) => {
 	const wsAddress = getWsAddress(req.hostname, port)
 	const env: Env = { wsAddress }
