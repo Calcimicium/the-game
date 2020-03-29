@@ -78,10 +78,14 @@ const clientConfig: webpack.Configuration = {
 	resolve
 }
 
-const clientServerConfig: webpack.Configuration = {
+const serverConfig: webpack.Configuration = {
 	context: srcDir,
 	devtool,
 	entry: "./server/index.ts",
+	externals: {
+		express: "express",
+		ws: "ws"
+	},
 	module: baseModule,
 	mode,
 	output: {
@@ -90,10 +94,14 @@ const clientServerConfig: webpack.Configuration = {
 		libraryTarget: "commonjs2"
 	},
 	resolve,
-	target: "node"
+	target: "node",
+	node: {
+		__dirname: false,
+		__filename: false
+	}
 }
 
 export default [
 	clientConfig,
-	clientServerConfig
+	serverConfig
 ]
