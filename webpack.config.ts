@@ -64,8 +64,8 @@ const clientConfig: webpack.Configuration = {
 			template: path.join(srcDir, "client", "static", "index.ejs"),
 			templateParameters: {
 				__env__: serialize({
-					WS_HOST: process.env.WS_HOST,
-					WS_PORT: process.env.WS_PORT
+					HOST: process.env.HOST,
+					PORT: process.env.PORT
 				})
 			},
 			xhtml: true
