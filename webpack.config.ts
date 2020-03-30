@@ -1,3 +1,4 @@
+import * as CopyWebpackPlugin from "copy-webpack-plugin"
 import * as Dotenv from "dotenv"
 import * as HtmlWebpackPlugin from "html-webpack-plugin"
 import * as HtmlWebpackHarddiskPlugin from "html-webpack-harddisk-plugin"
@@ -76,21 +77,40 @@ const clientConfig: webpack.Configuration = {
 	resolve
 }
 
+const distServerDir = path.join(distDir, "server")
+const srcServerDir = path.join(srcDir, "server")
+const serverModule: webpack.Module = { ...baseModule }
+baseModule.rules.push({
+	use: "file-loader",
+	test: /\.sql$/
+})
+
 const serverConfig: webpack.Configuration = {
 	context: srcDir,
 	devtool,
-	entry: "./server/index.ts",
+	entry: {
+		serve: "./server/index.ts",
+		migrate: "./server/migrate.ts"
+	},
 	externals: {
 		express: "express",
 		ws: "ws"
 	},
-	module: baseModule,
+	module: serverModule,
 	mode,
 	output: {
-		filename: "index.js",
+		filename: "[name].js",
 		path: path.join(distDir, "server"),
 		libraryTarget: "commonjs2"
 	},
+	plugins: [
+		new CopyWebpackPlugin([
+			{
+				from: path.join(srcServerDir, "migrations"),
+				to: path.join(distServerDir, "migrations")
+			}
+		])
+	],
 	resolve,
 	target: "node",
 	node: {
