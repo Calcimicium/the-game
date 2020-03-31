@@ -1,23 +1,32 @@
 import BaseDao from "./base-dao"
-import client from "./client"
+import pool from "./pool"
 import Player from "models/player"
 
 export class PlayerDao extends BaseDao<Player> {
-	create(model: Player): Promise<void> {
+	async create(player: Player): Promise<void> {
+		if (!this.client)
+			throw new Error("The pool must be connected before querying.")
+
+		const query = "insert into player (nickname) values ($1) returning *"
+		const res = await this.client.query(query, [player.nickname])
+		player.id = res.rows[0].id
+	}
+
+	async delete(id: number): Promise<void> {
 		throw new Error("Method not implemented.")
 	}
-	delete(id: number): Promise<void> {
+
+	async findById(id: number): Promise<Player | null> {
 		throw new Error("Method not implemented.")
 	}
-	findById(id: number): Promise<Player | null> {
+
+	async find(limit?: number, offset?: number): Promise<Player[]> {
 		throw new Error("Method not implemented.")
 	}
-	find(limit?: number, offset?: number): Promise<Player[]> {
-		throw new Error("Method not implemented.")
-	}
-	update(id: number): Promise<void> {
+
+	async update(id: number): Promise<void> {
 		throw new Error("Method not implemented.")
 	}
 }
 
-export const playerDao = new PlayerDao(client)
+export const playerDao = new PlayerDao(pool)

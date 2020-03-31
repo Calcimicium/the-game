@@ -1,5 +1,5 @@
 import BaseDao from "./base-dao"
-import client from "./client"
+import pool from "./pool"
 import Game from "../../models/game"
 
 export class GameDao extends BaseDao<Game> {
@@ -16,7 +16,7 @@ export class GameDao extends BaseDao<Game> {
 	}
 
 	async find(limit?: number, offset?: number): Promise<Game[]> {
-		const res = await client.query("SELECT * FROM game")
+		const res = await pool.query("SELECT * FROM game")
 		console.log("res", res)
 		return [new Game]
 	}
@@ -26,4 +26,4 @@ export class GameDao extends BaseDao<Game> {
 	}
 }
 
-export const gameDao = new GameDao(client)
+export const gameDao = new GameDao(pool)

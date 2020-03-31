@@ -2,20 +2,19 @@ import * as pg from "pg"
 import BaseModel from "models/base-model"
 
 export default abstract class BaseDao<TModel extends BaseModel> {
-	constructor(client: pg.Client) {
-		this._client = client
+	constructor(pool: pg.Pool) {
+		this._pool = pool
 	}
 
-	get client(): pg.Client {
-		return this._client
+	get client(): pg.PoolClient | null { return this._client }
+
+	async closeConnection(): Promise<void> {
+		if (this._client) this._client.release()
+		this._client = null
 	}
 
 	async connect(): Promise<void> {
-		await this.client.connect()
-	}
-
-	async end(): Promise<void> {
-		await this.client.end()
+		this._client = await this._pool.connect()
 	}
 
 	abstract async create(model: TModel): Promise<void>
@@ -24,5 +23,6 @@ export default abstract class BaseDao<TModel extends BaseModel> {
 	abstract async find(limit?: number, offset?: number): Promise<TModel[]>
 	abstract async update(id: TModel["id"]): Promise<void>
 
-	private _client: pg.Client
+	private _client: pg.PoolClient | null = null
+	private _pool: pg.Pool
 }

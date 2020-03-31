@@ -18,7 +18,7 @@ export default abstract class BaseService<
 	}
 
 	protected async end(): Promise<void> {
-		await this.dao.end()
+		await this.dao.closeConnection()
 	}
 
 	abstract async create(model: TModel): Promise<void>

@@ -27,6 +27,7 @@ const baseModule: webpack.Module = {
 const resolve: webpack.Resolve = {
 	alias: {
 		"client": path.join(srcDir, "client"),
+		"domains": path.join(srcDir, "domains"),
 		"env": path.join(srcDir, "env.ts"),
 		"server": path.join(srcDir, "server"),
 		"models": path.join(srcDir, "models"),
