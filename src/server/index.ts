@@ -27,6 +27,7 @@ const keyGrip = KeyGrip(keys, "sha256", "hex")
 
 const server = Express()
 .set("trust proxy", true)
+.use("/", httpsRedirection)
 .use("/css", Express.static(path.join(clientDir, "css")))
 .use("/js", Express.static(path.join(clientDir, "js")))
 .use(cookieSession({ keys: keyGrip, name: "session" }))
@@ -61,6 +62,17 @@ wss.on("connection", ws => {
 
 	ws.on("close", () => console.log("Client disconnected"))
 })
+
+function httpsRedirection(
+	req: Express.Request,
+	res: Express.Response,
+	next: Express.NextFunction
+): void {
+	if (!isSecured(req) && process.env.HTTPS)
+		return res.redirect(`https://${req.hostname}${req.originalUrl}`)
+
+	next()
+}
 
 function isSecured(req: Express.Request): boolean {
 	return req.protocol === "https"
