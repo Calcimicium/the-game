@@ -1,8 +1,6 @@
 import * as React from "react"
 import { RouteComponentProps } from "react-router-dom"
 import Input from "client/components/input"
-import { gameService } from "client/services/game-service"
-import websocket from "client/websocket"
 import Game from "models/game"
 
 import "./style.scss"
@@ -11,11 +9,6 @@ export default class GameList extends React.Component<InjectedProps, State> {
 	constructor(props: Readonly<InjectedProps>) {
 		super(props)
 		this.state = { publicGames: [] }
-		// websocket.onmessage = (e) => this.handleWebsocketMessage(e.data)
-	}
-
-	componentDidMount() {
-		gameService.get()
 	}
 
 	render() {
@@ -33,10 +26,6 @@ export default class GameList extends React.Component<InjectedProps, State> {
 
 			<div className="games-container">{this.renderGameList()}</div>
 		</div>
-	}
-
-	private handleWebsocketMessage(message: any): void {
-		console.log("message", message)
 	}
 
 	private initCreateGame() {

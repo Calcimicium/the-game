@@ -1,11 +1,5 @@
 import Player from "models/player"
-import { BaseService } from "./base-service"
-
-export class PlayerService extends BaseService<Player> {
-	get(): Promise<Player[]> {
-		throw new Error("Method not implemented.")
-	}
-}
+import * as BaseService from "./base-service"
 
 export class NicknameError extends Error {
 	constructor(code: NicknameErrorCode, message?: string) {
@@ -18,6 +12,10 @@ export class NicknameError extends Error {
 	}
 
 	private _code: NicknameErrorCode
+}
+
+export function findMe(): Promise<Player|null> {
+	return BaseService.get("/users/me")
 }
 
 export function validateNickname(
