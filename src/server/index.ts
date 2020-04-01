@@ -9,10 +9,9 @@ import * as net from "net"
 import * as path from "path"
 import * as WebSocket from "ws"
 import dispatchMessage from "./message-handlers/dispatch-message"
-import signInRouter from "./routers/sign-in-router"
+import mainRouter from "./routers/main-router"
 
 const clientDir = path.resolve(__dirname, "../client")
-const indexFile = path.join(clientDir, "index.html")
 const port = process.env.PORT
 
 if (!port) {
@@ -46,13 +45,7 @@ const app = Express()
 .use("/js", Express.static(path.join(clientDir, "js")))
 .use(sessionMiddleware)
 .use(Express.json())
-.use("/sign-in", signInRouter)
-
-.delete("/sign-out", (req, res, next) => {
-	next()
-})
-
-.get("/*", (req, res, next) => res.sendFile(indexFile))
+.use(mainRouter)
 
 const server = http.createServer(app)
 const wss = new WebSocket.Server({ noServer: true })
