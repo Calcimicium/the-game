@@ -1,6 +1,3 @@
-import * as Dotenv from "dotenv"
-Dotenv.config()
-
 import cookieSession = require("cookie-session")
 import * as Express from "express"
 import * as http from "http"

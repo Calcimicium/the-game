@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack",
+    "dev-server": "webpack-dev-server",
     "start": "node dist/server/serve",
-    "start-dev": "webpack-dev-server",
+    "start-dev": "node -r dotenv/config dist/server/serve",
     "migrate": "node dist/server/migrate",
     "test": "jest"
   },
