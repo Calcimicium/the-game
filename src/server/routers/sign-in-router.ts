@@ -1,4 +1,5 @@
 import * as express from "express"
+import * as PlayerDomain from "domains/player-domain"
 import Player from "models/player"
 import { playerService } from "server/services/player-service"
 
@@ -13,13 +14,9 @@ signInRouter.post("/", (req, res, next) => {
 
 	playerService.create(player)
 	.then(() => {
-		if (req.session) req.session.player = player.id
+		if (req.session) req.session.playerId = player.id
 
-		return res.status(201).send({
-			id: player.id,
-			nickname: player.nickname,
-			publicName: player.publicName
-		})
+		return res.status(201).send(PlayerDomain.toResponseBody(player))
 	})
 	.catch(reason => {
 		console.error(reason)

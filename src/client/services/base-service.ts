@@ -37,5 +37,5 @@ async function genericFetch<TReqBody, TResBody>(
 
 	if (response.ok) return response.json()
 
-	throw new Error(response.statusText)
+	throw response
 }

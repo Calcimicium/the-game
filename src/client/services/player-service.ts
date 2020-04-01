@@ -15,7 +15,7 @@ export class NicknameError extends Error {
 }
 
 export function findMe(): Promise<Player|null> {
-	return BaseService.get("/users/me")
+	return BaseService.get("/players/me")
 }
 
 export function validateNickname(
