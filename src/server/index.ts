@@ -15,11 +15,27 @@ const clientDir = path.resolve(__dirname, "../client")
 const indexFile = path.join(clientDir, "index.html")
 const port = process.env.PORT
 
-const keys = [
-	"2+&mbTy*DvV_AGdxb&hk7*kbcS#4$V!M",
-	"v_pLJ-7CmFebNLW7^uHHw=r*6y-*sZNZ",
-	"b$2zfMQ79LLjZj?BE5v=y9_JzTH!^ctZ"
-]
+if (!port) {
+	console.error(
+		"Configuration error:",
+		"PORT environment variable must be defined.\n"
+	)
+	process.exit(1)
+}
+
+const secretKey1 = process.env.SECRET_KEY_2
+const secretKey2 = process.env.SECRET_KEY_1
+const secretKey3 = process.env.SECRET_KEY_3
+
+if (!secretKey1 || !secretKey2 || !secretKey3) {
+	console.error(
+		"Configuration error:",
+		"All of SECRET_KEY_2, SECRET_KEY_1 or SECRET_KEY_3 environement variables must be defined.\n"
+	)
+	process.exit(1)
+}
+
+const keys = [secretKey1, secretKey2, secretKey3]
 const keyGrip = KeyGrip(keys, "sha256", "hex")
 const sessionMiddleware = cookieSession({ keys: keyGrip, name: "session" })
 
