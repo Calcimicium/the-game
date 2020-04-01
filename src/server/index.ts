@@ -3,21 +3,17 @@ Dotenv.config()
 
 import cookieSession = require("cookie-session")
 import * as Express from "express"
-import * as fs from "fs"
 import * as http from "http"
 import * as KeyGrip from "keygrip"
 import * as net from "net"
 import * as path from "path"
 import * as WebSocket from "ws"
-import { DEFAULT_PORT, Env, getWsAddress, ENV_TEMPLATE } from "env"
 import dispatchMessage from "./message-handlers/dispatch-message"
 import signInRouter from "./routers/sign-in-router"
 
 const clientDir = path.resolve(__dirname, "../client")
 const indexFile = path.join(clientDir, "index.html")
-const indexContent = fs.readFileSync(indexFile, "utf8")
-const port = process.env.PORT || DEFAULT_PORT
-const clientPort = process.env.NODE_ENV !== "production" ? port : undefined
+const port = process.env.PORT
 
 const keys = [
 	"2+&mbTy*DvV_AGdxb&hk7*kbcS#4$V!M",
@@ -40,11 +36,7 @@ const app = Express()
 	next()
 })
 
-.get("/*", (req, res, next) => {
-	const wsAddress = getWsAddress(req.hostname, clientPort, isSecured(req))
-	const env: Env = { wsAddress }
-	res.send(indexContent.replace(ENV_TEMPLATE, JSON.stringify(env)))
-})
+.get("/*", (req, res, next) => res.sendFile(indexFile))
 
 const server = http.createServer(app)
 const wss = new WebSocket.Server({ noServer: true })

@@ -87,9 +87,7 @@ interface Alerts {
 	nickname?: Alert;
 }
 
-interface Props {
-	webSocket: WebSocket;
-}
+interface Props {}
 
 interface State {
 	alerts?: Alerts;

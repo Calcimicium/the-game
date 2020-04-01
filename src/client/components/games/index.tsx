@@ -16,8 +16,6 @@ export default class Games extends React.Component<InjectedProps> {
 	}
 }
 
-interface Props {
-	webSocket: WebSocket;
-}
+interface Props {}
 
 type InjectedProps = Props & RouteComponentProps

@@ -1,11 +1,9 @@
 import * as CopyWebpackPlugin from "copy-webpack-plugin"
 import * as Dotenv from "dotenv"
 import * as HtmlWebpackPlugin from "html-webpack-plugin"
-import * as HtmlWebpackHarddiskPlugin from "html-webpack-harddisk-plugin"
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin"
 import * as path from "path"
 import * as webpack from "webpack"
-import { getWsAddress, ENV_TEMPLATE, Env } from "./src/env"
 
 Dotenv.config()
 
@@ -42,11 +40,6 @@ clientModule.rules.push({
 	test: /\.(css|sass|scss)$/
 })
 
-const __env__: Env = { wsAddress: getWsAddress(process.env.HOST, process.env.PORT) }
-const templateParameters = mode === "development"
-? { __env__: JSON.stringify(__env__) }
-: { __env__: ENV_TEMPLATE }
-
 const clientConfig: webpack.Configuration = {
 	context: srcDir,
 	devServer: {
@@ -68,11 +61,9 @@ const clientConfig: webpack.Configuration = {
 		new HtmlWebpackPlugin({
 			alwaysWriteToDisk: true,
 			inject: "head",
-			template: path.join(srcDir, "client", "static", "index.ejs"),
-			templateParameters,
+			template: path.join(srcDir, "client", "static", "index.html"),
 			xhtml: true
 		}),
-		new HtmlWebpackHarddiskPlugin(),
 		new MiniCssExtractPlugin({ filename: "css/[name].css" })
 	],
 	resolve
