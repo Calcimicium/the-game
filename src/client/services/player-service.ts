@@ -1,4 +1,3 @@
-import webSocket from "client/websocket"
 import Player from "models/player"
 import { BaseService } from "./base-service"
 
@@ -19,19 +18,6 @@ export class NicknameError extends Error {
 	}
 
 	private _code: NicknameErrorCode
-}
-
-export function signIn(nickname: string): void {
-	webSocket.onopen = function(e) {
-		console.log("Connection open", this)
-		this.send("players/create")
-	}
-
-	webSocket.onmessage = function(e) {
-		localStorage.setItem("nickname", nickname)
-		console.log("this", this)
-		console.log("e.data", e.data)
-	}
 }
 
 export function validateNickname(

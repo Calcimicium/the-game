@@ -29,3 +29,26 @@ export interface Message<TBody> {
 }
 
 export type MessageMethod = "create" | "delete" | "get" | "update"
+
+export async function post<TResponseBody, TRequestBody>(
+	path: string,
+	body: TRequestBody
+): Promise<TResponseBody> {
+	const url = `${window.location.origin}${path}`
+
+	const headers = new Headers()
+	headers.append("Accept", "application/json")
+	headers.append("Content-Type", "application/json")
+
+	const init: RequestInit = {
+		body: serialize(body),
+		headers,
+		method: "POST"
+	}
+
+	const response = await fetch(url, init)
+
+	if (response.ok) return response.json()
+
+	throw new Error(response.statusText)
+}

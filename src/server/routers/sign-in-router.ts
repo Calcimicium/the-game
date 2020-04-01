@@ -13,7 +13,7 @@ signInRouter.post("/", (req, res, next) => {
 
 	playerService.create(player)
 	.then(() => {
-		if (req.session) req.session.player = player.publicName
+		if (req.session) req.session.player = player.id
 
 		return res.status(201).send({
 			id: player.id,

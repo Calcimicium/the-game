@@ -4,12 +4,13 @@ Dotenv.config()
 import cookieSession = require("cookie-session")
 import * as Express from "express"
 import * as fs from "fs"
+import * as http from "http"
 import * as KeyGrip from "keygrip"
+import * as net from "net"
 import * as path from "path"
 import * as WebSocket from "ws"
 import { DEFAULT_PORT, Env, getWsAddress, ENV_TEMPLATE } from "env"
 import dispatchMessage from "./message-handlers/dispatch-message"
-import Player from "models/player"
 import signInRouter from "./routers/sign-in-router"
 
 const clientDir = path.resolve(__dirname, "../client")
@@ -24,13 +25,14 @@ const keys = [
 	"b$2zfMQ79LLjZj?BE5v=y9_JzTH!^ctZ"
 ]
 const keyGrip = KeyGrip(keys, "sha256", "hex")
+const sessionMiddleware = cookieSession({ keys: keyGrip, name: "session" })
 
-const server = Express()
+const app = Express()
 .set("trust proxy", true)
 .use("/", httpsRedirection)
 .use("/css", Express.static(path.join(clientDir, "css")))
 .use("/js", Express.static(path.join(clientDir, "js")))
-.use(cookieSession({ keys: keyGrip, name: "session" }))
+.use(sessionMiddleware)
 .use(Express.json())
 .use("/sign-in", signInRouter)
 
@@ -44,12 +46,26 @@ const server = Express()
 	res.send(indexContent.replace(ENV_TEMPLATE, JSON.stringify(env)))
 })
 
-.listen(port, () => {
-	console.log("Listening on port", port)
+const server = http.createServer(app)
+const wss = new WebSocket.Server({ noServer: true })
+
+server.on("upgrade", (
+	req: Express.Request,
+	socket: net.Socket,
+	head: Buffer
+) => {
+	sessionMiddleware(req, {} as Express.Response, () => {
+		if (!req.session?.player) return socket.destroy()
+
+		wss.handleUpgrade(req, socket, head, ws => {
+			wss.emit("connection", ws, req)
+		})
+	})
 })
 
-const wss = new WebSocket.Server({ server })
-wss.on("connection", ws => {
+wss.on("connection", (ws, req: Express.Request) => {
+	console.log("Session player", req.session?.player)
+
 	console.log("New client connected")
 
 	wss.clients.forEach(c => {
@@ -61,6 +77,10 @@ wss.on("connection", ws => {
 	ws.on("message", dispatchMessage)
 
 	ws.on("close", () => console.log("Client disconnected"))
+})
+
+server.listen(port, () => {
+	console.log("Listening on port", port)
 })
 
 function httpsRedirection(

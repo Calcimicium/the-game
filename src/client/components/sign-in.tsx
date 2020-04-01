@@ -1,7 +1,8 @@
 import * as cl from "classnames"
 import * as React from "react"
 import { Redirect, RouteComponentProps } from "react-router-dom"
-import * as PlayerService from "../services/player-service"
+import * as AuthService from "client/services/auth-service"
+import * as PlayerService from "client/services/player-service"
 
 export default class SignIn extends React.Component<InjectedProps, State> {
 	constructor(props: Readonly<InjectedProps>) {
@@ -10,8 +11,7 @@ export default class SignIn extends React.Component<InjectedProps, State> {
 	}
 
 	render() {
-		if (localStorage.getItem("nickname"))
-			return <Redirect to="/games"/>
+		if (localStorage.getItem("player")) return <Redirect to="/games"/>
 
 		const nicknameId = "nickname"
 		const helperClassNames = cl("input-helper", {
@@ -44,7 +44,13 @@ export default class SignIn extends React.Component<InjectedProps, State> {
 
 		PlayerService.validateNickname(nickname, err => {
 			if (err) return this.handleNicknameValidationError(err)
-			PlayerService.signIn(nickname as string)
+
+			AuthService.signIn(nickname as string)
+			.then(playerResBody => {
+				localStorage.setItem("player", JSON.stringify(playerResBody))
+				this.props.history.replace("/games")
+			})
+			.catch(reason => console.error(reason))
 		})
 	}
 
