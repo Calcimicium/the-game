@@ -11,8 +11,6 @@ export default class SignIn extends React.Component<InjectedProps, State> {
 	}
 
 	render() {
-		if (localStorage.getItem("player")) return <Redirect to="/games"/>
-
 		const nicknameId = "nickname"
 		const helperClassNames = cl("input-helper", {
 			danger: this.state.alerts?.nickname?.level === AlertLevel.Danger,
@@ -47,7 +45,6 @@ export default class SignIn extends React.Component<InjectedProps, State> {
 
 			AuthService.signIn(nickname as string)
 			.then(playerResBody => {
-				localStorage.setItem("player", JSON.stringify(playerResBody))
 				this.props.history.replace("/games")
 			})
 			.catch(reason => console.error(reason))

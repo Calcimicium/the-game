@@ -10,12 +10,7 @@ export class App extends React.Component<Props> {
 
 	render() {
 		return <Router>
-			<Route path="/" render={() => {
-				if (!localStorage.getItem("nickname"))
-					return <Redirect to="/sign-in"/>
-
-				return <Redirect to="/games"/>
-			}}/>
+			<Route path="/" render={() => <Redirect to="/games"/>}/>
 
 			<Route path="/sign-in" render={props => <SignIn {...props}/>}/>
 
