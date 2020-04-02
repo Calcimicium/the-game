@@ -25,7 +25,7 @@ async function genericFetch<TReqBody, TResBody>(
 	method: "DELETE" | "GET" | "POST" | "PUT" = "GET",
 	body?: TReqBody
 ): Promise<TResBody> {
-	const url = `${window.location.origin}${path}`
+	const url = `${window.location.origin}/api${path}`
 	const headers = new Headers()
 	headers.append("Accept", "application/json")
 	headers.append("Content-Type", "application/json")
