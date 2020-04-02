@@ -6,14 +6,19 @@ export default abstract class BaseDao<TModel extends BaseModel> {
 		this._pool = pool
 	}
 
-	get client(): pg.PoolClient | null { return this._client }
+	get client(): pg.PoolClient {
+		if (!this._client)
+			throw new Error("The pool must be connected before using the client.")
 
-	async closeConnection(): Promise<void> {
+		return this._client
+	}
+
+	closeConnection(): void {
 		if (this._client) this._client.release()
 		this._client = null
 	}
 
-	async connect(): Promise<void> {
+	async openConnection(): Promise<void> {
 		this._client = await this._pool.connect()
 	}
 

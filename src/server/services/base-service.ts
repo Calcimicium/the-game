@@ -13,12 +13,12 @@ export default abstract class BaseService<
 		return this._dao
 	}
 
-	protected async connect(): Promise<void> {
-		await this.dao.connect()
+	protected async openConnection(): Promise<void> {
+		await this.dao.openConnection()
 	}
 
-	protected async end(): Promise<void> {
-		await this.dao.closeConnection()
+	protected closeConnection(): void {
+		this.dao.closeConnection()
 	}
 
 	abstract async create(model: TModel): Promise<void>

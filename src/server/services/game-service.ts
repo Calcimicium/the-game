@@ -10,9 +10,9 @@ export class GameService extends BaseService<Game, GameDao> {
 			new Game(),
 			new Game(),
 		]
-		this.connect()
+		this.openConnection()
 		const games = await this.dao.find()
-		this.end()
+		this.closeConnection()
 
 		return games
 	}
