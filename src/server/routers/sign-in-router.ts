@@ -16,7 +16,7 @@ signInRouter.post("/", (req, res, next) => {
 	.then(() => {
 		if (req.session) req.session.playerId = player.id
 
-		return res.status(201).send(PlayerDomain.toResponseBody(player))
+		return res.status(201).json(PlayerDomain.toResponseBody(player))
 	})
 	.catch(reason => {
 		console.error(reason)

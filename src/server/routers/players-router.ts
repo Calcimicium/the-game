@@ -10,7 +10,7 @@ playerRouter.get("/me", (req, res, next) => {
 	playerService.findById(req.session.playerId)
 	.then(player => {
 		if (!player) return res.sendStatus(404)
-		res.send(PlayerDomain.toResponseBody(player))
+		res.json(PlayerDomain.toResponseBody(player))
 	})
 	.catch(reason => {
 		console.error(reason)
