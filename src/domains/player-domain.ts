@@ -16,3 +16,11 @@ export function toResponseBody(player: Player): PlayerResponseBody {
 		publicName: player.publicName
 	}
 }
+
+export function toPlayer(responseBody: PlayerResponseBody): Player {
+	const player = new Player
+	player.id = responseBody.id
+	player.nickname = responseBody.nickname
+	player.publicName = responseBody.publicName
+	return player
+}

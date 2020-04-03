@@ -1,4 +1,6 @@
 import Player from "models/player"
+import { PlayerResponseBody } from "bodies/response-bodies"
+import * as PlayerDomain from "domains/player-domain"
 import * as BaseService from "./base-service"
 
 export class NicknameError extends Error {
@@ -14,8 +16,9 @@ export class NicknameError extends Error {
 	private _code: NicknameErrorCode
 }
 
-export function findMe(): Promise<Player|null> {
-	return BaseService.get("/players/me")
+export async function findMe(): Promise<Player | null> {
+	const playerResBody = await BaseService.get<PlayerResponseBody>("/players/me")
+	return PlayerDomain.toPlayer(playerResBody)
 }
 
 export function validateNickname(

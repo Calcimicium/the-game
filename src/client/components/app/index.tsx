@@ -2,26 +2,33 @@ import * as React from "react"
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
 import Games from "client/components/games"
 import SignIn from "client/components/sign-in"
+import SplashScreen from "client/components/splash-screen"
 import * as PlayerService from "client/services/player-service"
 import Player from "models/player"
+import "./style.scss"
 
 export class App extends React.Component<Props, State> {
 	constructor(props: Readonly<Props>) {
 		super(props)
-		this.state = { loading: true }
+		this.state = {
+			fetchingPlayer: false,
+			playerFetchRequired: true,
+			showSplashScreen: true
+		}
 	}
 
 	componentDidMount() {
-		if (this.player) return
+		if (!this.state.showSplashScreen) return this.fetchPlayerIfRequired()
+		setTimeout(() => this.fetchPlayerIfRequired(), 2000)
+	}
 
-		this.setState({ loading: true })
-			PlayerService.findMe()
-			.then(player => this.resolveFindMe(player))
-			.catch(reason => this.rejectFindMe(reason))
+	componentDidUpdate() {
+		this.fetchPlayerIfRequired()
 	}
 
 	render() {
-		if (this.state.loading) return <div>Loading...</div>
+		if (this.state.showSplashScreen)
+			return <SplashScreen loading={this.state.fetchingPlayer}/>
 
 		return <Router>
 			<Route path="/" render={() => {
@@ -37,14 +44,38 @@ export class App extends React.Component<Props, State> {
 		</Router>
 	}
 
+	private fetchPlayerIfRequired(): void {
+		if (this.player) return
+		if (this.state.fetchingPlayer) return
+		if (!this.state.playerFetchRequired) return
+
+		return this.forceFetchPlayer()
+	}
+
+	private forceFetchPlayer(): void {
+		this.setState({ fetchingPlayer: true }, () => {
+			PlayerService.findMe()
+			.then(player => this.resolveFindMe(player))
+			.catch(reason => this.rejectFindMe(reason))
+		})
+	}
+
 	private rejectFindMe(reason: any): void {
 		console.error(reason)
-		this.setState({ loading: false })
+		this.setState({
+			fetchingPlayer: false,
+			playerFetchRequired: false,
+			showSplashScreen: false
+		})
 	}
 
 	private resolveFindMe(player: Player | null): void {
 		this.player = player
-		this.setState({ loading: false })
+		this.setState({
+			fetchingPlayer: false,
+			playerFetchRequired: false,
+			showSplashScreen: false
+		})
 	}
 
 	private player: Player | null = null
@@ -53,5 +84,7 @@ export class App extends React.Component<Props, State> {
 interface Props {}
 
 interface State {
-	loading: boolean;
+	fetchingPlayer: boolean;
+	playerFetchRequired: boolean;
+	showSplashScreen: boolean;
 }
