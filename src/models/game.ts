@@ -2,23 +2,13 @@ import Player from "./player"
 import BaseModel from "./base-model"
 
 export default class Game extends BaseModel {
-	constructor() {
-		super()
-		this._maxPlayers = 0
-		this._players = []
-	}
+	get maxPlayers(): number { return this._maxPlayers }
+	set maxPlayers(value: number) { this._maxPlayers = value }
 
-	get maxPlayers(): number {
-		return this._maxPlayers
-	}
+	get pass(): string | null { return this._pass }
+	set pass(value: string | null) { this._pass = value }
 
-	set maxPlayers(value: number) {
-		this._maxPlayers = value
-	}
-
-	get players(): Player[] {
-		return this._players
-	}
+	get players(): Player[] { return this._players }
 
 	addPlayer(player: Player): this {
 		this._players.push(player)
@@ -33,6 +23,7 @@ export default class Game extends BaseModel {
 		return this
 	}
 
-	private _maxPlayers: number
-	private _players: Player[]
+	private _maxPlayers: number = 0
+	private _pass: string | null = null
+	private _players: Player[] = []
 }
