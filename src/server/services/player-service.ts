@@ -1,34 +1,36 @@
 import BaseService from "server/services/base-service"
 import * as PlayerDomain from "domains/player-domain"
 import Player from "models/player"
-import { PlayerDao, playerDao } from "server/dao/player-dao"
+import {
+	PlayerDao,
+	playerDao,
+	PlayerResultRow,
+	PlayerCreateParams
+} from "server/dao/player-dao"
 
-export class PlayerService extends BaseService<Player, PlayerDao> {
-	async create(player: Player): Promise<void> {
-		await this.openConnection()
-		await this.dao.create(player)
-		PlayerDomain.setPublicName(player)
-		this.closeConnection()
-	}
-
-	async delete(model: Player): Promise<void> {
-		throw new Error("Method not implemented.")
-	}
-
-	async findById(id: number): Promise<Player | null> {
-		await this.openConnection()
-		const player = await this.dao.findById(id)
-		if (player) PlayerDomain.setPublicName(player)
-		this.closeConnection()
+export class PlayerService
+extends BaseService<Player, PlayerResultRow, PlayerCreateParams, PlayerDao> {
+	protected createFromResultRow(resultRow: PlayerResultRow): Player {
+		const player = new Player
+		this.updateFromResultRow(player, resultRow)
 		return player
 	}
 
-	async find(limit?: number, offset?: number): Promise<Player[]> {
-		throw new Error("Method not implemented.")
+	protected getCreateParams(player: Player): PlayerCreateParams {
+		return { nickname: player.nickname }
 	}
 
-	async update(model: Player): Promise<void> {
-		throw new Error("Method not implemented.")
+	protected getUpdateParams(player: Player): Partial<PlayerCreateParams> {
+		return { nickname: player.nickname }
+	}
+
+	protected updateFromResultRow(
+		player: Player,
+		resultRow: PlayerResultRow
+	): void {
+		player.id = resultRow.id
+		player.nickname = resultRow.nickname
+		PlayerDomain.setPublicName(player)
 	}
 }
 

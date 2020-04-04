@@ -1,36 +1,31 @@
 import BaseService from "./base-service"
 import Game from "../../models/game"
-import { gameDao, GameDao } from "../dao/game-dao"
+import {
+	gameDao,
+	GameDao,
+	GameResultRow,
+	GameCreateParams
+} from "../dao/game-dao"
 
-export class GameService extends BaseService<Game, GameDao> {
-	async find(limit?: number, offset?: number): Promise<Game[]> {
-		return [
-			new Game(),
-			new Game(),
-			new Game(),
-			new Game(),
-		]
-		this.openConnection()
-		const games = await this.dao.find()
-		this.closeConnection()
-
-		return games
+export class GameService
+extends BaseService<Game, GameResultRow, GameCreateParams, GameDao> {
+	protected createFromResultRow(resultRow: GameResultRow): Game {
+		const game = new Game
+		this.updateFromResultRow(game, resultRow)
+		return game
 	}
 
-	async findById(id: number): Promise<Game | null> {
-		throw new Error("Method not implemented.")
+	protected getCreateParams(game: Game): GameCreateParams {
+		return { max_players: game.maxPlayers }
 	}
 
-	async create(model: Game): Promise<void> {
-		throw new Error("Method not implemented.")
+	protected getUpdateParams(game: Game): Partial<GameCreateParams> {
+		return { max_players: game.maxPlayers }
 	}
 
-	async delete(model: Game): Promise<void> {
-		throw new Error("Method not implemented.")
-	}
-
-	async update(model: Game): Promise<void> {
-		throw new Error("Method not implemented.")
+	protected updateFromResultRow(game: Game, resultRow: GameResultRow): void {
+		game.id = resultRow.id
+		game.maxPlayers = resultRow.max_players
 	}
 }
 
