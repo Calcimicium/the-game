@@ -1,8 +1,10 @@
 import * as cl from "classnames"
 import * as React from "react"
-import { Redirect, RouteComponentProps } from "react-router-dom"
+import * as Rr from "react-router-dom"
 import * as AuthService from "client/services/auth-service"
 import * as PlayerService from "client/services/player-service"
+import * as PlayerDomain from "domains/player-domain"
+import Player from "models/player"
 
 export default class SignIn extends React.Component<InjectedProps, State> {
 	constructor(props: Readonly<InjectedProps>) {
@@ -11,6 +13,8 @@ export default class SignIn extends React.Component<InjectedProps, State> {
 	}
 
 	render() {
+		if (this.props.player) return <Rr.Redirect to="/"/>
+
 		const nicknameId = "nickname"
 		const helperClassNames = cl("input-helper", {
 			danger: this.state.alerts?.nickname?.level === AlertLevel.Danger,
@@ -45,7 +49,8 @@ export default class SignIn extends React.Component<InjectedProps, State> {
 
 			AuthService.signIn(nickname as string)
 			.then(playerResBody => {
-				this.props.history.replace("/games")
+				const player = PlayerDomain.toPlayer(playerResBody)
+				this.props.onSignIn(player)
 			})
 			.catch(reason => console.error(reason))
 		})
@@ -84,10 +89,13 @@ interface Alerts {
 	nickname?: Alert;
 }
 
-interface Props {}
+interface Props {
+	player: Player | null;
+	onSignIn(player: Player): void;
+}
 
 interface State {
 	alerts?: Alerts;
 }
 
-type InjectedProps = Props & RouteComponentProps
+type InjectedProps = Props & Rr.RouteComponentProps

@@ -2,7 +2,17 @@ const host = window.location.host
 const wss = "https" === window.location.protocol
 const address = getWsAddress(host, wss)
 
-export default new WebSocket(address)
+function createWebSocket(): WebSocket {
+	const ws = new WebSocket(address)
+
+	ws.onmessage = function (e) {
+		console.log("Message", JSON.parse(e.data))
+	}
+
+	return ws
+}
+
+export default createWebSocket
 
 export function getWsAddress(
 	host?: string,
