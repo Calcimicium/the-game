@@ -9,21 +9,15 @@ export default class Input extends React.Component<Props> {
 			<label htmlFor={this.props.id}>{this.props.label}</label>}
 
 			<span>
-				<input id={this.props.id}
-				       name={this.props.name}
-				       type={this.props.type}
-				       value={this.props.value}
-				       onClick={() => this.props.onClick && this.props.onClick()}/>
+				<input {...this.props}/>
 			</span>
 		</p>
 	}
 }
 
-interface Props {
-	id?: string;
+type Props = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+& PropsExtension
+
+interface PropsExtension {
 	label?: string;
-	name?: string;
-	type?: string;
-	value?: string;
-	onClick?(): void
 }
