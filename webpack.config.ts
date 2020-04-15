@@ -55,6 +55,7 @@ const clientConfig: webpack.Configuration = {
 	output: {
 		filename: "js/index.js",
 		path: distClientDir,
+		publicPath: "/",
 		libraryTarget: "umd"
 	},
 	plugins: [
