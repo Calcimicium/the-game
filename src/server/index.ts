@@ -7,6 +7,7 @@ import * as path from "path"
 import * as WebSocket from "ws"
 import dispatchMessage from "./message-handlers/dispatch-message"
 import apiRouter from "./routers/api-router"
+import { gameService } from "./services/game-service"
 
 const clientDir = path.resolve(__dirname, "../client")
 const indexFile = path.join(clientDir, "index.html")
@@ -55,7 +56,7 @@ server.on("upgrade", (
 	head: Buffer
 ) => {
 	sessionMiddleware(req, {} as Express.Response, () => {
-		if (!req.session?.player) return socket.destroy()
+		if (!req.session?.playerId) return socket.destroy()
 
 		wss.handleUpgrade(req, socket, head, ws => {
 			wss.emit("connection", ws, req)
@@ -64,7 +65,7 @@ server.on("upgrade", (
 })
 
 wss.on("connection", (ws, req: Express.Request) => {
-	console.log("Session player", req.session?.player)
+	console.log("Session player", req.session?.playerId)
 
 	console.log("New client connected")
 
@@ -73,6 +74,14 @@ wss.on("connection", (ws, req: Express.Request) => {
 
 		//TODO
 	})
+
+	gameService.find()
+	.then(games => {
+		ws.send(JSON.stringify({ games }), (err) => {
+			err && console.error(err)
+		})
+	})
+	.catch(reason => console.error(reason))
 
 	ws.on("message", dispatchMessage)
 

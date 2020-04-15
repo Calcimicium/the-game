@@ -2,6 +2,7 @@ import * as React from "react"
 import * as Rr from "react-router-dom"
 import Auth from "client/components/auth"
 import Games from "client/components/games"
+import GameCreator from "client/components/game-creator"
 import Home from "client/components/home"
 import Players from "client/components/players"
 import createWebSocket from "client/websocket/create-websocket"
@@ -15,6 +16,7 @@ export class App extends React.Component {
 					<Rr.Switch>
 						<Rr.Route exact path="/" render={p => <Home/>}/>
 						<Rr.Route exact path="/games" render={p => <Games/>}/>
+						<Rr.Route exact path="/games/create" render={p => <GameCreator/>}/>
 						<Rr.Route exact path="/players" render={p => <Players/>}/>
 					</Rr.Switch>
 				</Auth>

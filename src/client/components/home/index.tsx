@@ -3,7 +3,9 @@ import * as Rr from "react-router-dom"
 
 class Home extends React.Component<InjectedProps> {
 	render() {
-		return <div></div>
+		return <div>
+			<Rr.Link to="/games/create">Create a game</Rr.Link>
+		</div>
 	}
 }
 

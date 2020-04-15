@@ -1,8 +1,10 @@
 import * as Express from "express"
-import signInRouter from "./sign-in-router"
+import gamesRouter from "./games-router"
 import playersRouter from "./players-router"
+import signInRouter from "./sign-in-router"
 
 const mappings: RouterMapping[] = [
+	{ path: "/games", router: gamesRouter },
 	{ path: "/players", router: playersRouter },
 	{ path: "/sign-in", router: signInRouter }
 ]

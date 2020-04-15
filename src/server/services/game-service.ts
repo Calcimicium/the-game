@@ -16,7 +16,11 @@ extends BaseService<Game, GameResultRow, GameCreateParams, GameDao> {
 	}
 
 	protected getCreateParams(game: Game): GameCreateParams {
-		return { max_players: game.maxPlayers }
+		return {
+			creator: game.creator!.id,
+			max_players: game.maxPlayers,
+			pass: game.pass
+		}
 	}
 
 	protected getUpdateParams(game: Game): Partial<GameCreateParams> {

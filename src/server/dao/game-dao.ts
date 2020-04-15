@@ -1,6 +1,7 @@
 import BaseDao, { BaseResultRow } from "./base-dao"
 import pool from "./pool"
-import Game from "../../models/game"
+import Game from "models/game"
+import Player from "models/player"
 
 export class GameDao extends BaseDao<Game, GameResultRow, GameCreateParams> {
 	get tableName(): string { return "game" }
@@ -13,5 +14,7 @@ export interface GameResultRow extends BaseResultRow<Game> {
 }
 
 export interface GameCreateParams {
-	max_players: number;
+	creator: Player["id"];
+	max_players: Game["maxPlayers"];
+	pass: Game["pass"];
 }

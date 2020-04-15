@@ -2,6 +2,9 @@ import Player from "./player"
 import BaseModel from "./base-model"
 
 export default class Game extends BaseModel {
+	get creator(): Player | null { return this._creator }
+	set creator(value: Player | null) { this._creator = value }
+
 	get maxPlayers(): number { return this._maxPlayers }
 	set maxPlayers(value: number) { this._maxPlayers = value }
 
@@ -23,6 +26,7 @@ export default class Game extends BaseModel {
 		return this
 	}
 
+	private _creator: Player | null = null
 	private _maxPlayers: number = 0
 	private _pass: string | null = null
 	private _players: Player[] = []
