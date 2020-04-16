@@ -1,6 +1,7 @@
 html,
 body,
 #app {
+	color: #fff;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	height: 100%;
 	width: 100%;
@@ -15,5 +16,7 @@ body {
 }
 
 #app {
+	box-sizing: border-box;
 	overflow: hidden;
+	padding: 5%;
 }
