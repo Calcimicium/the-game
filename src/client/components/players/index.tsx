@@ -9,6 +9,8 @@ class Players extends React.Component<InjectedProps> {
 
 export default Rr.withRouter(Players)
 
-interface Props {}
+interface Props {
+	websocket: WebSocket;
+}
 
 type InjectedProps = Props & Rr.RouteComponentProps

@@ -80,7 +80,9 @@ class GameCreator extends React.Component<InjectedProps, State> {
 
 export default Rr.withRouter(GameCreator)
 
-interface Props {}
+interface Props {
+	websocket: WebSocket;
+}
 
 interface State {
 	game: Game | null;

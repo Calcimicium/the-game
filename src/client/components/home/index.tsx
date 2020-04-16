@@ -11,6 +11,8 @@ class Home extends React.Component<InjectedProps> {
 
 export default Rr.withRouter(Home)
 
-interface Props {}
+interface Props {
+	websocket: WebSocket;
+}
 
 type InjectedProps = Props & Rr.RouteComponentProps
